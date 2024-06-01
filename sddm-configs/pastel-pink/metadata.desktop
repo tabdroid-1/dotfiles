@@ -1,0 +1,14 @@
+[SddmGreeterTheme]
+Name=Pastel Pink
+Description=The sweetest theme around; Dark and Pink!
+Author=tabdroid
+Type=sddm-theme
+Version=1.2
+Website=https://github.com/MarianArlt/sddm-sugar-dark
+Screenshot=Preview.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Email=marianarlt@icloud.com
+Theme-Id=pastel-pink
+Theme-API=2.11

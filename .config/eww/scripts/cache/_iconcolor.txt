@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/tabby/Pictures/walpapers/idkwoodsdrawingwithpinkishtint.png",
+    "alpha": "100",
+
+    "special": {
+        "background": "#0f101c",
+        "foreground": "#ddc1d4",
+        "cursor": "#ddc1d4"
+    },
+    "colors": {
+        "color0": "#0f101c",
+        "color1": "#3D4686",
+        "color2": "#635F94",
+        "color3": "#876084",
+        "color4": "#957097",
+        "color5": "#BD7EA8",
+        "color6": "#9E89B1",
+        "color7": "#ddc1d4",
+        "color8": "#9a8794",
+        "color9": "#3D4686",
+        "color10": "#635F94",
+        "color11": "#876084",
+        "color12": "#957097",
+        "color13": "#BD7EA8",
+        "color14": "#9E89B1",
+        "color15": "#ddc1d4"
+    }
+}

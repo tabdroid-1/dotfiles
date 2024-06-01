@@ -1,0 +1,38 @@
+sw_volume: 100
+audio_device_state:1:pulse audio
+audio_device_state:1:my_fifo
+state: play
+current: 18
+time: 120.028000
+random: 0
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+0:Usual/echo.mp3
+1:Usual/Kevin _ Uncanny [Original Song].mp3
+2:Usual/Crusher-P - Again.mp3
+3:Usual/CircusP, Marvin Valentin - Wrong + Right.mp3
+4:Usual/CircusP - Better Off Worse.mp3
+5:Usual/Model - Buzdan Şato.mp3
+6:Usual/Model - Değmesin Ellerimiz.mp3
+7:Usual/Model - Pembe Mezarlık.mp3
+8:Usual/Model - Makyaj.mp3
+9:Usual/Ghost and Pals, Vane Lily - End-World Normopathy.mp3
+10:Usual/CreepP - Exorcism.mp3
+11:Usual/CircusP, Chis-A - Golden Afternoon.mp3
+12:Usual/Vane Lily - Heart's Claws - 2023 ver..mp3
+13:Usual/Riproducer - It Should've Been Me.mp3
+14:Usual/Vane Lily, Carbon Monoxide - Lamentations.mp3
+15:Usual/Ghost and Pals - Pathological Facade.mp3
+16:Usual/Vane Lily - Perfectly Sweet.mp3
+17:Usual/Riproducer - Pyrite Girl.mp3
+18:Usual/Ghost and Pals, Vane Lily - Reckless Battery Burns.mp3
+19:Usual/Sunburn.mp3
+20:Usual/Ghost and Pals - Those Who Carried On.mp3
+21:Usual/Crusher, Eleanor Forte - Wicked.mp3
+22:Usual/Crusher-P - Would You Rather.mp3
+playlist_end

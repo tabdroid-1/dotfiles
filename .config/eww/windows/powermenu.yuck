@@ -1,0 +1,1012 @@
+(defwidget powermenu_button [ icon text optn_num force_height ]
+  (box
+    (button
+      :class "powermenu-btn${force_height ? '-forceheight' : ''}${optn_num == powermenu_option ? '-active' : ''}"
+      :onclick "hyprctl dispatch submap reset && eww close powermenu; ${POWERMENU_COMMANDS[optn_num]}"
+      (box
+        :valign "center"
+        :orientation "v"
+        :space-evenly false
+        (label
+          :class "icon-material txt-badonkers"
+          :text {icon}
+        )
+        (label
+          :class "txt-small"
+          :text {text}
+        )
+      )
+    )
+  )
+)
+
+(defwidget powermenu_quicklaunch [ icon text optn_num ]
+  (box
+    (button
+      :class "powermenu-btn-bottom"
+      :onclick {POWERMENU_QUICKLAUNCHES[optn_num]}
+      (overlay
+        (box
+          :valign "center"
+          :orientation "v"
+          :space-evenly false
+          (label
+            :class "icon-material txt-hugeass"
+            :text {icon}
+          )
+          (label
+            :class "txt-small"
+            :text {text}
+          )
+        )
+        ; number indicator
+        (box
+          :class "powermenu-btn-number"
+          :halign "start" :valign "start"
+          (label
+            :class "txt-small"
+            :text {optn_num == 0 ? 'Grave' : optn_num}
+          )
+        )
+      )
+    )
+  )
+)
+
+(defwidget powermenu_guidetext [ icon text ]
+  (box
+    :class "spacing-h-10"
+    :space-evenly false :orientation "h"
+    (label :xalign 1
+      :class "txt-large powermenu-keybind-min-width"
+      :text "[${icon}]"
+    )
+    (label :xalign 0
+      :class "txt-small"
+      :text {text}
+    )
+  )
+)
+
+;; (defwidget avatar_mpd [
+;;   current duration progress icon separator album 
+;;   title artist like like_icon prev prev_icon next 
+;;   next_icon minimal minimal_icon play_icon 
+;;   pause_icon command]
+;;   (box :orientation "vertical" 
+;;        :class "avatar-mpd-box" 
+;;        :space-evenly false
+;;        :spacing 20
+;;        :style "
+;;          background-image: radial-gradient(
+;;            circle farthest-side at left,
+;;            ${mpd_sub.bright} 48%,
+;;            rgba(30, 33, 40, 0.7) 80%),
+;;            url(\"${mpd_sub.file}\"
+;;          );
+;;          color: ${mpd_sub.dark}
+;;        "
+;;
+;;     (box :class "avatar-mpd-header-box"
+;;          :space-evenly false
+;;
+;;       (box :hexpand true
+;;            :space-evenly false
+;;         (label :class "avatar-mpd-icon"
+;;                :text icon)
+;;         (label :class "avatar-mpd-name"
+;;                :text "MPD")
+;;         (label :class "avatar-mpd-separator"
+;;                :text separator)
+;;         (label :class "avatar-mpd-album ${album == "" ? "avatar-mpd-album-null" : ""}" 
+;;                :style "color: ${mpd_sub.dark}"
+;;                :text album
+;;                :limit-width 30))
+;;
+;;       (button :onclick minimal
+;;               :class "avatar-mpd-minimal-box"
+;;               :halign "end"
+;;         (label :class "avatar-mpd-minimal"
+;;                :text minimal_icon)))
+;;
+;;     (box :orientation "vertical" 
+;;          :class "avatar-title-artist-box"
+;;          :space-evenly false
+;;          :halign "start"
+;;       (label :class "avatar-mpd-title"
+;;              :halign "start"
+;;              :text title
+;;              :wrap true
+;;              :xalign 0.0
+;;              :limit-width 30)
+;;       (label :class "avatar-mpd-artist"
+;;              :text artist
+;;              :halign "start"
+;;              :limit-width 30))
+;;
+;;     (box :class "avatar-mpd-controls"
+;;          :space-evenly false
+;;          :spacing 20
+;;
+;;       (button :onclick like
+;;               :class "avatar-mpd-button-like"
+;;         (label :class "avatar-mpd-label-like"
+;;                :text like_icon))
+;;       (button :onclick prev 
+;;               :class "avatar-mpd-button-prev" 
+;;         (label :class "avatar-mpd-label-prev" 
+;;                :text prev_icon))
+;;
+;;       (button :onclick "mpc toggle"
+;;               :class "avatar-mpd-button-playback"
+;;         (label :class "avatar-mpd-label-playback" 
+;;                :text "${mpd_sub.status == "play" ? play_icon : pause_icon}"))
+;;       (button :onclick next 
+;;               :class "avatar-mpd-button-next" 
+;;         (label :class "avatar-mpd-label-next" 
+;;                :text next_icon)))
+;;
+;;     (scale :class "avatar-mpd-progress"
+;;            :value progress
+;;            :onchange command
+;;            :min 0
+;;            :max 100
+;;            :active true)
+;;
+;;     (box :class "avatar-mpd-footer"
+;;          :space-evenly false
+;;       (label :class "avatar-mpd-label-current" 
+;;              :text current 
+;;              :hexpand true 
+;;              :halign "start")
+;;       (label :class "avatar-mpd-label-duration" 
+;;              :text duration 
+;;              :halign "end"))))
+;;
+;; (defwidget _mpdx [shufflelbl repeatlbl randomlbl singlelbl consumelbl xfadelbl
+;;                   shufflecmd randomcmd repeatcmd singlecmd consumecmd xfadecmd
+;;                   randomc repeatc singlec consumec xfadec]
+;;   (box :width 450 :space-evenly false :class "ava-mpdx-box" :halign "center" :hexpand true :spacing 30 :orientation "vertical"
+;;     (box :space-evenly false :class "ava-mpdx-shuffle-repeat-random" :halign "center" :vexpand true :spacing 30
+;;       (button :onclick shufflecmd :class "ava-mpdx-btn ava-mpdx-btn-shuffle" shufflelbl)
+;;       (button :onclick repeatcmd :class "ava-mpdx-btn ava-mpdx-btn-repeat ${repeatc}" repeatlbl)
+;;       (button :onclick randomcmd :class "ava-mpdx-btn ava-mpdx-btn-random ${randomc}" randomlbl))
+;;     (box :space-evenly false :class "ava-mpdx-single-consume-xfade" :halign "center" :vexpand true :spacing 30
+;;       (button :onclick singlecmd :class "ava-mpdx-btn ava-mpdx-btn-single ${singlec}" singlelbl)
+;;       (button :onclick consumecmd :class "ava-mpdx-btn ava-mpdx-btn-consume ${consumec}" consumelbl)
+;;       (button :onclick xfadecmd :class "ava-mpdx-btn ava-mpdx-btn-xfade ${xfadec}" xfadelbl))))
+;;
+;; ; vim:filetype=yuck
+
+(defwidget powermenu_widget []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :class "powermenu-bg"
+    (box ; Top corners
+      :space-evenly false
+      :orientation "h"
+      (image
+        :path "images/svg/corner_topleft.svg"
+        :image-width BG_ROUNDING
+        :image-height BG_ROUNDING
+      )
+      (box :hexpand true)
+      (image
+        :path "images/svg/corner_topright.svg"
+        :image-width BG_ROUNDING
+        :image-height BG_ROUNDING
+      )
+    )
+    (centerbox
+      :space-evenly false
+        (box ; Music
+          (eventbox
+            :onhover "${EWW_CMD} update rev_mixerbtn=true &"
+            :onhoverlost "${EWW_CMD} update rev_mixerbtn=false &"
+            (box
+              :hexpand true
+              :class "powermenu-music"
+              (overlay
+                :hexpand true
+                (box ; 0. Fallback background
+                  :class "powermenu-music-thumbnail-fallback"
+                )
+                (box ; 1. The background
+                  :class "powermenu-music-thumbnail"
+                  ;; :style "
+                  ;; ${mcover.image == 'null' ? '' : ('background-image: url(\'"&{mcover.image}\"\'); background-size: 100% auto; background-position: center')}
+                  ;; "
+                  :style "background-image: url(\"eww_covers/cover_art\"); background-size: 100% auto; background-position: center;"
+
+                )
+                (box ; 2. Color tint
+                  :class "powermenu-music-vignette"
+                  :hexpand true
+                )
+                (box ; 3. Text and controls
+                  :class "spacing-v-minus5"
+                  :orientation "v"
+                  :space-evenly false
+                  (box ; Media source, output
+                    :class "powermenu-music-toprow"
+                    :space-evenly false
+                    :orientation "h"
+                    (label :xalign 0
+                      :hexpand true
+                      :class "powermenu-music-source txt-hugeass"
+                      :text "${mcover.color.source}"
+                      :style "color: ${mcover.materialcolor.onPrimaryContainer};"
+                      :style {mcover.materialcolor.onPrimaryContainer == "null" ? "" : "color: ${mcover.materialcolor.onPrimaryContainer};"}
+                    )
+                    (box
+                      :orientation "h" :space-evenly false :class "spacing-h-5"
+                      :halign "end"
+                      :class "powermenu-music-output txt-small"
+                      :style "
+                      ${mcover.materialcolor.primary == 'null' ? '' : 'background-color: ${mcover.materialcolor.primary};'}
+                      ${mcover.materialcolor.onPrimary == 'null' ? '' : 'color: ${mcover.materialcolor.onPrimary};'}
+                      "
+                      (label
+                        :class "icon-material powermenu-music-device"
+                        :text "${volume.device == 'Headphones' ? '' : ''} "
+                        :style {mcover.materialcolor.onPrimary == "null" ? "" : "color: ${mcover.materialcolor.onPrimary};"}
+                      )
+                      (label
+                        :text "${volume.device}"
+                        :style {mcover.materialcolor.onPrimary == "null" ? "" : "color: ${mcover.materialcolor.onPrimary};"}
+                      )
+                    )
+                    (button ; Open mixer
+                      :halign "end"
+                      :class "powermenu-music-output txt-small"
+                      :style "
+                      ${ANIM_ENTER[0]}
+                      ${rev_mixerbtn ? '' : 'margin-right: -10rem;'}
+                      "
+                      :onclick "${EWW_CMD} update rev_mixer=${!rev_mixer}"
+                      (box
+                        :orientation "h" :space-evenly false
+                        :class "spacing-h-5"
+                        (label
+                          :class "icon-material powermenu-music-device"
+                          :text "tune "
+                        )
+                        (label
+                          :text "Mixer "
+                        )
+                        (label
+                          :class "icon-material powermenu-music-device txt-norm"
+                          :text "chevron_right"
+                        )
+                      )
+                    )
+                  )
+                  (box ; Title, play button
+                    :space-evenly false
+                    :orientation "h"
+                    (scroll
+                      :class "powermenu-music-title-scroll"
+                      :hexpand true
+                      :hscroll true :vscroll false
+                      (box
+                        :orientation "v"
+                        :space-evenly false
+                        :valign "center"
+                        (label :xalign 0
+                          :class "powermenu-music-title txt-norm"
+                          :style {mcover.materialcolor.onPrimaryContainer == "null" ? "" : "color: ${mcover.materialcolor.onPrimaryContainer};"}
+                          :text "${strlength(mname.title) == 0 ? 'Music' : mname.title}"
+                        )
+                        (label :xalign 0
+                          :class "powermenu-music-artist txt-small"
+                          :style {mcover.materialcolor.onPrimaryContainer == "null" ? "" : "color: ${mcover.materialcolor.onPrimaryContainer};"}
+                          :text "${mname.artist}"
+                        )
+                      )
+                    )
+                    (eventbox
+                      :valign "center"
+                      :class "txt-hugeass powermenu-music-playbtn"
+                      :onclick "playerctl -p 'mpd' play-pause"
+                      :cursor "pointer"
+                      (box
+                        :style "
+                        ${mcover.materialcolor.primary == 'null' ? '' : 'background-color: ${mcover.materialcolor.primary};'}
+                        ${mcover.materialcolor.onPrimary == 'null' ? '' : 'color: ${mcover.materialcolor.onPrimary};'}
+                        "
+                        "${mplay == 'Playing' ? 'pause' : 'play_arrow'}"
+                      )
+                    )
+                  )
+                  (box ; Slider and skip track buttons
+                    :space-evenly false
+                    :orientation "h"
+                    (eventbox
+                      :class "txt-larger powermenu-music-trackbtn"
+                      :onclick "playerctl -p 'mpd' previous"
+                      (box
+                        :style "
+                        ${mcover.materialcolor.onPrimaryContainer == 'null' ? '' : ('color: ' + mcover.materialcolor.onPrimaryContainer + ';')}
+                        "
+                        "skip_previous"
+                      )
+                    )
+                    ;; (overlay
+                    ;;   :hexpand true
+                    ;;   (box
+                    ;;     :hexpand true
+                    ;;     :valign "center"
+                    ;;     :class "powermenu-music-progress"
+                    ;;     :style "
+                    ;;     background-image:
+                    ;;     linear-gradient(to right,
+                    ;;       ${mcover.materialcolor.onPrimaryContainer} ${music.position}%,
+                    ;;       rgba(200, 200, 200, 0.6) ${music.position}%);
+                    ;;     "
+                    ;;   )
+                    ;;   (label
+                    ;;     :class "powermenu-music-progress-btn txt-large"
+                    ;;     :valign "center"
+                    ;;     :xalign {music.position == '' ? 0 : (music.position / 100)}
+                    ;;     :style "
+                    ;;     ${mcover.materialcolor.onPrimaryContainer == 'null' ? '' : ('color: ' + mcover.materialcolor.onPrimaryContainer + ';')}
+                    ;;     "
+                    ;;     :text "●"
+                    ;;   )
+                    ;; )
+                    ;; Below is the proper scale widget, but doesn't follow Material colors
+                     (scale
+                           :hexpand true
+                           :class "powermenu-music-slider"
+                           :style "
+                         highlight {
+                           color: red;
+                           }
+                           "
+                           :value {music.position}
+                           :onchange "playerctl -p 'mpd' position `bc <<< \"{} * $(playerctl -p 'mpd' metadata mpris:length) / 1000000 / 100\"`"
+                     )
+                    (eventbox
+                      :class "txt-larger powermenu-music-trackbtn"
+                      :onclick "playerctl -p 'mpd' next || playerctl -p 'mpd' position `bc <<< \"100 * $(playerctl -p 'mpd' metadata mpris:length) / 1000000 / 100\"`"
+                      :cursor "pointer"
+                      (box
+                        :style "
+                        color: ${mcover.materialcolor.onPrimaryContainer};
+                        "
+                        "skip_next"
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      (box ; Power options
+        :space-evenly false
+        :halign "center"
+        :class "spacing-v-15 powermenu-btn-area"
+        :orientation "v"
+        (box
+          :space-evenly false
+          :class "spacing-h-15"
+          (powermenu_button :optn_num 0 :force_height true :icon "lock" :text "Lock")
+          (powermenu_button :optn_num 1 :force_height true :icon "logout" :text "Logout")
+          (powermenu_button :optn_num 2 :force_height true :icon "bedtime" :text "Sleep")
+        )
+        (box
+          :space-evenly false
+          :class "spacing-h-15"
+          (powermenu_button :optn_num 3 :force_height true :icon "system_update_alt" :text "Hibernate")
+          (powermenu_button :optn_num 4 :force_height true :icon "power_settings_new" :text "Shutdown")
+          (powermenu_button :optn_num 5 :force_height true :icon "restart_alt" :text "Reboot")
+        )
+        ; Cancel button
+        (box :halign "center"
+          (powermenu_button :optn_num 7 :force_height false :icon "Close" :text "Cancel")
+        )
+      )
+      (box ; Clock
+        :hexpand true
+        :space-evenly false
+        :orientation "v"
+        :class "powermenu-time txt"
+        (label :xalign 1
+          :class "txt-badonkers"
+          :text {EWW_TIME}
+        )
+        (label :xalign 1
+          :class "txt-large"
+          :text {EWW_DATE}
+        )
+      )
+    )
+    ; (box :vexpand true)
+    ; Info stuff
+    (box
+      :halign "center" :valign "center"
+      :vexpand true
+      :orientation "h"
+      :space-evenly false
+      :class "spacing-h-15 powermenu-spec"
+      (box
+        :valign "center"
+        :class "spacing-h-15"
+        :space-evenly false
+        :orientation "h"
+        (label
+          :class "icon-material txt-badonkers powermenu-icon"
+          :text "devices"
+        )
+        (box
+          :valign "center"
+          :orientation "v"
+          :space-evenly false
+          :class "spacing-v-5"
+          ; (label :xalign 0
+          ;   :class "txt-large txt"
+          ;   :text "Hardware"
+          ; )
+          (label :xalign 0
+            :wrap true
+            :class "txt-small txt"
+            :text "${cpuname}"
+          )
+          (label :xalign 0
+            :wrap true
+            :class "txt-small txt"
+            :text "${gpunames}"
+          )
+        )
+      )
+      (box
+        :valign "center"
+        :class "spacing-h-10"
+        :space-evenly false
+        :orientation "h"
+        (box
+          :class "powermenu-icon"
+          :style "background-image: url('images/logos/asahilinux.svg');"
+        )
+        (box
+          :valign "center"
+          :orientation "v"
+          :space-evenly false
+          :class "spacing-v-5"
+          (label :xalign 0
+            :class "txt-large txt"
+            :text "${username}@${hostname}"
+          )
+          (label :xalign 0
+            :class "txt-small txt"
+            :text "${kernel}"
+          )
+        )
+      )
+      (box
+        :valign "center"
+        :class "spacing-h-15"
+        :space-evenly false
+        :orientation "h"
+        (box
+          :class "powermenu-icon"
+          :style "background-image: url('images/svg/hyprland.svg');"
+        )
+        (box
+          :valign "center"
+          :orientation "v"
+          :space-evenly false
+          :class "spacing-v-5"
+          (label :xalign 0
+            :class "txt-large txt"
+            :text "Hyprland"
+          )
+          (label :xalign 0
+            :class "txt-small txt"
+            :text "${hyprland_version}"
+          )
+        )
+      )
+    )
+    (box ; Resources
+      :class "spacing-h-5 powermenu-resource"
+      :orientation "h"
+      :valign "bottom"
+      :space-evenly true 
+      (box
+        :class "powermenu-resource-value"
+        :space-evenly false
+        (label :class "icon-material txt-large"
+          :valign "center"
+          :text "data_saver_on"
+        )
+        (label :class "txt-smaller" :text "${round(EWW_CPU.avg, 0)}%")
+        (progress
+          :valign "center"
+          :hexpand true
+          :class "powermenu-prog-resource"
+          :value {round(EWW_CPU.avg, 0)}
+        )
+      )
+      (box
+        :class "powermenu-resource-value"
+        :space-evenly false
+        (label :class "icon-material txt-larger"
+          :valign "center"
+          :text "memory"
+        )
+        (box :orientation "v"
+          (label :xalign 0
+            :class "txt-smaller"
+            :text {memory.used}
+          )
+          (label :xalign 0
+            :class "txt-smaller"
+            :text "+${memory.swapused}"
+          )
+        )
+        (box
+          :valign "center"
+          :orientation "v" 
+          :hexpand true
+          (progress
+            :valign "center"
+            :hexpand true
+            :class "powermenu-prog-resource"
+            :value {memory.percentage}
+          )
+          (progress
+            :valign "center"
+            :hexpand true
+            :class "powermenu-prog-resource"
+            :value {memory.swappercentage}
+          )
+        )
+      )
+      (box
+        :class "powermenu-resource-value"
+        :space-evenly false
+        :hexpand true
+        (label :class "icon-material txt-larger"
+          :valign "center"
+          :text "hard_drive"
+        )
+        (label :xalign 0
+          :class "txt-smaller"
+          :text {diskfree}
+        )
+        (progress
+          :hexpand true
+          :valign "center"
+          :class "powermenu-prog-resource"
+          :value {diskfreepercent}
+        )
+      )
+    )
+    ;; (box ; Quick-launches
+    ;;   :space-evenly false
+    ;;   :halign "center"
+    ;;   :class "spacing-h-15 powermenu-btn-area"
+    ;;   ; toggle fps
+    ;;   (powermenu_quicklaunch :optn_num 0 :icon "60fps_select" :text "Toggle FPS")
+    ;;   (powermenu_quicklaunch :optn_num 1 :icon "language" :text "Open browser setup")
+    ;;   (powermenu_quicklaunch :optn_num 2 :icon "widgets" :text "Config Eww")
+    ;;   (powermenu_quicklaunch :optn_num 3 :icon "water_drop" :text "Config Hyprland")
+    ;;   (powermenu_quicklaunch :optn_num 4 :icon "article" :text "Hyprland Wiki")
+    ;;   (powermenu_quicklaunch :optn_num 5 :icon "auto_awesome" :text "Rickroll")
+    ;; )
+
+    ;; (scroll
+    ;;   :hscroll false :vscroll true
+    ;;   :vexpand true
+      (box
+        :vexpand true
+        :class "spacing-v-15"
+        :orientation "v" :space-evenly false
+      )
+    ;; )
+    (box ; Bottom corners
+      :space-evenly false
+      :orientation "h"
+      (image
+        :path "images/svg/corner_bottomleft.svg"
+        :image-width BG_ROUNDING
+        :image-height BG_ROUNDING
+      )
+      (box :hexpand true)
+      (image
+        :path "images/svg/corner_bottomright.svg"
+        :image-width BG_ROUNDING
+        :image-height BG_ROUNDING
+      )
+    )
+  )
+)
+
+(defwindow powermenu
+  :monitor 0
+  :stacking "overlay"
+  :namespace "noanim"
+  :geometry (geometry
+    :width "100%"
+    :height "100%"
+  )
+  (powermenu_widget)
+  ;; (avatar_mpd)
+)
+
+
+
+;; ram storage etc
+        ;; (box ; Resources
+        ;;   :class "spacing-h-5"
+        ;;   :orientation "h"
+        ;;   :space-evenly false
+        ;;   (box
+        ;;     :class "powermenu-resource-value"
+        ;;     :space-evenly false
+        ;;     (label :class "icon-material txt-large"
+        ;;       :valign "center"
+        ;;       :text "data_saver_on"
+        ;;     )
+        ;;     (label :class "txt-smaller" :text "${round(EWW_CPU.avg, 0)}%")
+        ;;     (progress
+        ;;       :valign "center"
+        ;;       :class "powermenu-prog-resource"
+        ;;       :value {round(EWW_CPU.avg, 0)}
+        ;;     )
+        ;;   )
+        ;;   (box
+        ;;     :class "powermenu-resource-value"
+        ;;     :space-evenly false
+        ;;     (label :class "icon-material txt-larger"
+        ;;       :valign "center"
+        ;;       :text "memory"
+        ;;     )
+        ;;     (box :orientation "v"
+        ;;       (label :xalign 0
+        ;;         :class "txt-smaller"
+        ;;         :text {memory.used}
+        ;;       )
+        ;;       (label :xalign 0
+        ;;         :class "txt-smaller"
+        ;;         :text "+${memory.swapused}"
+        ;;       )
+        ;;     )
+        ;;     (box
+        ;;       :valign "center"
+        ;;       :orientation "v" :space-evenly false
+        ;;       (progress
+        ;;         :valign "center"
+        ;;         :class "powermenu-prog-resource"
+        ;;         :value {memory.percentage}
+        ;;       )
+        ;;       (progress
+        ;;         :valign "center"
+        ;;         :class "powermenu-prog-resource"
+        ;;         :value {memory.swappercentage}
+        ;;       )
+        ;;     )
+        ;;   )
+        ;;   (box
+        ;;     :class "powermenu-resource-value"
+        ;;     :space-evenly false
+        ;;     :hexpand true
+        ;;     (label :class "icon-material txt-larger"
+        ;;       :valign "center"
+        ;;       :text "hard_drive"
+        ;;     )
+        ;;     (label :xalign 0
+        ;;       :class "txt-smaller"
+        ;;       :text {diskfree}
+        ;;     )
+        ;;     (progress
+        ;;       :hexpand true
+        ;;       :valign "center"
+        ;;       :class "powermenu-prog-resource"
+        ;;       :value {diskfreepercent}
+        ;;     )
+        ;;   )
+        ;; )
+
+
+
+
+
+            ;; (scroll
+            ;;   :hscroll false :vscroll true
+            ;;   :vexpand true
+            ;;   (box
+            ;;     :vexpand true
+            ;;     :class "spacing-v-15"
+            ;;     :orientation "v" :space-evenly false
+            ;;     (box ; Resources
+            ;;       :class "spacing-h-5"
+            ;;       :orientation "h"
+            ;;       :space-evenly false
+            ;;       (box
+            ;;         :class "powermenu-resource-value"
+            ;;         :space-evenly false
+            ;;         (label :class "icon-material txt-large"
+            ;;           :valign "center"
+            ;;           :text "data_saver_on"
+            ;;         )
+            ;;         (label :class "txt-smaller" :text "${round(EWW_CPU.avg, 0)}%")
+            ;;         (progress
+            ;;           :valign "center"
+            ;;           :class "powermenu-prog-resource"
+            ;;           :value {round(EWW_CPU.avg, 0)}
+            ;;         )
+            ;;       )
+            ;;       (box
+            ;;         :class "powermenu-resource-value"
+            ;;         :space-evenly false
+            ;;         (label :class "icon-material txt-larger"
+            ;;           :valign "center"
+            ;;           :text "memory"
+            ;;         )
+            ;;         (box :orientation "v"
+            ;;           (label :xalign 0
+            ;;             :class "txt-smaller"
+            ;;             :text {memory.used}
+            ;;           )
+            ;;           (label :xalign 0
+            ;;             :class "txt-smaller"
+            ;;             :text "+${memory.swapused}"
+            ;;           )
+            ;;         )
+            ;;         (box
+            ;;           :valign "center"
+            ;;           :orientation "v" :space-evenly false
+            ;;           (progress
+            ;;             :valign "center"
+            ;;             :class "powermenu-prog-resource"
+            ;;             :value {memory.percentage}
+            ;;           )
+            ;;           (progress
+            ;;             :valign "center"
+            ;;             :class "powermenu-prog-resource"
+            ;;             :value {memory.swappercentage}
+            ;;           )
+            ;;         )
+            ;;       )
+            ;;       (box
+            ;;         :class "powermenu-resource-value"
+            ;;         :space-evenly false
+            ;;         :hexpand true
+            ;;         (label :class "icon-material txt-larger"
+            ;;           :valign "center"
+            ;;           :text "hard_drive"
+            ;;         )
+            ;;         (label :xalign 0
+            ;;           :class "txt-smaller"
+            ;;           :text {diskfree}
+            ;;         )
+            ;;         (progress
+            ;;           :hexpand true
+            ;;           :valign "center"
+            ;;           :class "powermenu-prog-resource"
+            ;;           :value {diskfreepercent}
+            ;;         )
+            ;;       )
+            ;;     )
+            ;;     (box ; Music
+            ;;       (eventbox
+            ;;         :onhover "${EWW_CMD} update rev_mixerbtn=true &"
+            ;;         :onhoverlost "${EWW_CMD} update rev_mixerbtn=false &"
+            ;;         (box
+            ;;           :hexpand true
+            ;;           (overlay
+            ;;             :hexpand true
+            ;;             (box ; 0. Fallback background
+            ;;               :class "powermenu-music-thumbnail-fallback"
+            ;;             )
+            ;;             (box ; 1. The background
+            ;;               :class "powermenu-music-thumbnail"
+            ;;               :style "
+            ;;               ${mcover.image == 'null' ? '' : ('background-image: url(\'' + mcover.image + '\'); background-size: 100% auto; background-position: center')}
+            ;;               "
+            ;;             )
+            ;;             (box ; 2. Color tint
+            ;;               :class "powermenu-music-vignette"
+            ;;               :hexpand true
+            ;;             )
+            ;;             (box ; 3. Text and controls
+            ;;               :class "spacing-v-minus5"
+            ;;               :orientation "v"
+            ;;               :space-evenly false
+            ;;               (box ; Media source, output
+            ;;                 :class "powermenu-music-toprow"
+            ;;                 :space-evenly false
+            ;;                 :orientation "h"
+            ;;                 (label :xalign 0
+            ;;                   :hexpand true
+            ;;                   :class "powermenu-music-source txt-hugeass"
+            ;;                   :text "${mcover.color.source}"
+            ;;                   :style "color: ${mcover.materialcolor.onPrimaryContainer};"
+            ;;                   :style {mcover.materialcolor.onPrimaryContainer == "null" ? "" : "color: ${mcover.materialcolor.onPrimaryContainer};"}
+            ;;                 )
+            ;;                 (box
+            ;;                   :orientation "h" :space-evenly false :class "spacing-h-5"
+            ;;                   :halign "end"
+            ;;                   :class "powermenu-music-output txt-small"
+            ;;                   :style "
+            ;;                   ${mcover.materialcolor.primary == 'null' ? '' : 'background-color: ${mcover.materialcolor.primary};'}
+            ;;                   ${mcover.materialcolor.onPrimary == 'null' ? '' : 'color: ${mcover.materialcolor.onPrimary};'}
+            ;;                   "
+            ;;                   (label
+            ;;                     :class "icon-material powermenu-music-device"
+            ;;                     :text "${volume.device == 'Headphones' ? '' : ''} "
+            ;;                     :style {mcover.materialcolor.onPrimary == "null" ? "" : "color: ${mcover.materialcolor.onPrimary};"}
+            ;;                   )
+            ;;                   (label
+            ;;                     :text "${volume.device}"
+            ;;                     :style {mcover.materialcolor.onPrimary == "null" ? "" : "color: ${mcover.materialcolor.onPrimary};"}
+            ;;                   )
+            ;;                 )
+            ;;                 (button ; Open mixer
+            ;;                   :halign "end"
+            ;;                   :class "powermenu-music-output txt-small"
+            ;;                   :style "
+            ;;                   ${ANIM_ENTER[0]}
+            ;;                   ${rev_mixerbtn ? '' : 'margin-right: -10rem;'}
+            ;;                   "
+            ;;                   :onclick "${EWW_CMD} update rev_mixer=${!rev_mixer}"
+            ;;                   (box
+            ;;                     :orientation "h" :space-evenly false
+            ;;                     :class "spacing-h-5"
+            ;;                     (label
+            ;;                       :class "icon-material powermenu-music-device"
+            ;;                       :text "tune "
+            ;;                     )
+            ;;                     (label
+            ;;                       :text "Mixer "
+            ;;                     )
+            ;;                     (label
+            ;;                       :class "icon-material powermenu-music-device txt-norm"
+            ;;                       :text "chevron_right"
+            ;;                     )
+            ;;                   )
+            ;;                 )
+            ;;               )
+            ;;               (box ; Title, play button
+            ;;                 :space-evenly false
+            ;;                 :orientation "h"
+            ;;                 (scroll
+            ;;                   :class "powermenu-music-title-scroll"
+            ;;                   :hexpand true
+            ;;                   :hscroll true :vscroll false
+            ;;                   (box
+            ;;                     :orientation "v"
+            ;;                     :space-evenly false
+            ;;                     :valign "center"
+            ;;                     (label :xalign 0
+            ;;                       :class "powermenu-music-title txt-norm"
+            ;;                       :style {mcover.materialcolor.onPrimaryContainer == "null" ? "" : "color: ${mcover.materialcolor.onPrimaryContainer};"}
+            ;;                       :text "${strlength(mname.title) == 0 ? 'Music' : mname.title}"
+            ;;                     )
+            ;;                     (label :xalign 0
+            ;;                       :class "powermenu-music-artist txt-small"
+            ;;                       :style {mcover.materialcolor.onPrimaryContainer == "null" ? "" : "color: ${mcover.materialcolor.onPrimaryContainer};"}
+            ;;                       :text "${mname.artist}"
+            ;;                     )
+            ;;                   )
+            ;;                 )
+            ;;                 (eventbox
+            ;;                   :valign "center"
+            ;;                   :class "txt-hugeass powermenu-music-playbtn"
+            ;;                   :onclick "playerctl play-pause"
+            ;;                   :cursor "pointer"
+            ;;                   (box
+            ;;                     :style "
+            ;;                     ${mcover.materialcolor.primary == 'null' ? '' : 'background-color: ${mcover.materialcolor.primary};'}
+            ;;                     ${mcover.materialcolor.onPrimary == 'null' ? '' : 'color: ${mcover.materialcolor.onPrimary};'}
+            ;;                     "
+            ;;                     "${mplay == 'Playing' ? 'pause' : 'play_arrow'}"
+            ;;                   )
+            ;;                 )
+            ;;               )
+            ;;               (box ; Slider and skip track buttons
+            ;;                 :space-evenly false
+            ;;                 :orientation "h"
+            ;;                 (eventbox
+            ;;                   :class "txt-larger powermenu-music-trackbtn"
+            ;;                   :onclick "playerctl previous"
+            ;;                   (box
+            ;;                     :style "
+            ;;                     ${mcover.materialcolor.onPrimaryContainer == 'null' ? '' : ('color: ' + mcover.materialcolor.onPrimaryContainer + ';')}
+            ;;                     "
+            ;;                     "skip_previous"
+            ;;                   )
+            ;;                 )
+            ;;                 (overlay
+            ;;                   :hexpand true
+            ;;                   (box
+            ;;                     :hexpand true
+            ;;                     :valign "center"
+            ;;                     :class "powermenu-music-progress"
+            ;;                     :style "
+            ;;                     background-image:
+            ;;                     linear-gradient(to right,
+            ;;                       ${mcover.materialcolor.onPrimaryContainer} ${music.position}%,
+            ;;                       rgba(200, 200, 200, 0.6) ${music.position}%);
+            ;;                     "
+            ;;                   )
+            ;;                   (label
+            ;;                     :class "powermenu-music-progress-btn txt-large"
+            ;;                     :valign "center"
+            ;;                     :xalign {music.position == '' ? 0 : (music.position / 100)}
+            ;;                     :style "
+            ;;                     ${mcover.materialcolor.onPrimaryContainer == 'null' ? '' : ('color: ' + mcover.materialcolor.onPrimaryContainer + ';')}
+            ;;                     "
+            ;;                     :text "●"
+            ;;                   )
+            ;;                 )
+            ;;                 ; ; Below is the proper scale widget, but doesn't follow Material colors
+            ;;                 ; (scale
+            ;;                   ;     :hexpand true
+            ;;                   ;     :class "powermenu-music-slider"
+            ;;                   ;     :style "
+            ;;                   ;     highlight {
+            ;;                   ;     color: red;
+            ;;                   ;     }
+            ;;                   ;     "
+            ;;                   ;     :value {music.position}
+            ;;                   ;     ; :onchange "playerctl position `bc <<< \"{} * $(playerctl metadata mpris:length) / 1000000 / 100\"`"
+            ;;                 ; )
+            ;;                 (eventbox
+            ;;                   :class "txt-larger powermenu-music-trackbtn"
+            ;;                   :onclick "playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`"
+            ;;                   :cursor "pointer"
+            ;;                   (box
+            ;;                     :style "
+            ;;                     color: ${mcover.materialcolor.onPrimaryContainer};
+            ;;                     "
+            ;;                     "skip_next"
+            ;;                   )
+            ;;                 )
+            ;;               )
+            ;;             )
+            ;;           )
+            ;;         )
+            ;;       )
+            ;;     )
+            ;;     (eventbox ; Quote
+            ;;       ; :vexpand true
+            ;;       :onscroll "scripts/scroll-quote {} &"
+            ;;       :onclick "${EWW_CMD} update quote_index=${(quote_index + 1 + arraylength(quote_content)) % arraylength(quote_content)} &"
+            ;;       (box
+            ;;         ; :vexpand true
+            ;;         :orientation "v" :space-evenly false
+            ;;         :class "powermenu-quote"
+            ;;         (box
+            ;;           :space-evenly false
+            ;;           (label  :xalign 0
+            ;;             :hexpand true
+            ;;             :angle 180
+            ;;             :class "icon-material txt-hugeass"
+            ;;             :text "format_quote"
+            ;;           )
+            ;;           (label :xalign 1
+            ;;             :class "txt-small powermenu-section-title-text"
+            ;;             :text "${quote_index+1}/${arraylength(quote_content)}"
+            ;;           )
+            ;;         )
+            ;;         (label  :xalign 0 :yalign 1
+            ;;           :vexpand true
+            ;;           :class "txt-small"
+            ;;           :wrap true
+            ;;           :text {quote_content[quote_index]}
+            ;;         )
+            ;;         (label  :xalign 0.9 :yalign 0
+            ;;           :vexpand true
+            ;;           :class "txt-small"
+            ;;           :wrap true
+            ;;           :text {quote_author[quote_index]}
+            ;;         )
+            ;;       )
+            ;;     )
+            ;;   )
+            ;; )
