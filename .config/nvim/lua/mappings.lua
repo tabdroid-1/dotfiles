@@ -6,6 +6,8 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
+map("v", "p", "P")
+map("v", "P", "p")
 
 function toggleCppHpp()
   local current_file = vim.fn.expand "%"
