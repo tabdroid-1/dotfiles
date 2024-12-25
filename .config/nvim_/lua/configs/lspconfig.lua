@@ -21,10 +21,10 @@ lspconfig.rust_analyzer.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
-  filetypes = { "rust" },
-  root_dir = util.root_pattern "Cargo.toml",
+  filetypes = {"rust"},
+  root_dir = util.root_pattern("Cargo.toml"),
   settings = {
-    ["rust_analyzer"] = {
+    ['rust_analyzer'] = {
       cargo = {
         allFeatures = true,
       },
@@ -36,19 +36,8 @@ lspconfig.clangd.setup {
   -- on_attach = nvlsp.on_attach,
   -- on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
-  cmd = {
-    "clangd",
-    "--header-insertion=never",
-  },
-}
-
-lspconfig.omnisharp.setup {
-  capabilities = capabilities,
-  cmd = { "dotnet", vim.fn.stdpath "data" .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
-  enable_import_completion = true,
-  organize_imports_on_format = true,
-  enable_roslyn_analyzers = true,
-  root_dir = function()
-    return vim.loop.cwd() -- current working directory
-  end,
+    cmd = {
+        "clangd",
+        "--header-insertion=never",
+    },
 }

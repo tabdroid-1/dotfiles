@@ -9,7 +9,6 @@ o.softtabstop = 4
 o.wrap = false
 
 o.commentstring = "// %s"
-o.timeoutlen = 1000
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "c", "cpp", "javascript", "java" },
