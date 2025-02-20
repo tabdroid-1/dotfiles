@@ -52,3 +52,5 @@ lspconfig.omnisharp.setup {
     return vim.loop.cwd() -- current working directory
   end,
 }
+
+lspconfig.glsl_analyzer.setup{}
